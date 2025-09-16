@@ -3,9 +3,20 @@
   "name": "Simple Notepad",
   "description": "A minimal Chrome extension to quickly write, save, and manage notes directly in your browser.",
   "version": "1.0",
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": "assets/notepad.png"
+  "permissions": ["storage", "contextMenus", "notifications"],
+  "background": {
+    "service_worker": "src/background/background.js"
   },
-  "permissions": ["storage"]
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "19": "src/icons/icon19.png",
+      "38": "src/icons/icon38.png"
+    }
+  },
+  "icons": {
+    "16": "src/icons/icon16.png",
+    "48": "src/icons/icon48.png",
+    "128": "src/icons/icon128.png"
+  }
 }
