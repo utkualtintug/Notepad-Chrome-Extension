@@ -192,3 +192,24 @@ body.dark #export {
 body.dark #export:hover {
     background-color: #3A6F96;
 }
+
+#infoBar {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+#wordCount {
+    color: #777;
+}
+
+#lastSaved {
+    color: #777;
+}
+
+body.dark #wordCount,
+body.dark #lastSaved {
+    color: #BBB;
+}
