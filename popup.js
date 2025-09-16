@@ -155,7 +155,6 @@ syncBtn.addEventListener("click", () => {
     }
   });
 });
-
 // --- load from sync button ---
 loadBtn.addEventListener("click", () => {
   chrome.storage.sync.get("myNote", (data) => {
@@ -168,10 +167,9 @@ loadBtn.addEventListener("click", () => {
     if (data.myNote) {
       textarea.value = data.myNote;
 
-      // save to local
       chrome.storage.local.set({ myNote: data.myNote });
 
-      updateCounters();
+      updateWordCount();
       updateTimestamp();
 
       console.log("Note loaded from sync:", data.myNote);
