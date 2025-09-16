@@ -35,6 +35,7 @@ body {
 /* Button to create a new note */
 #newNote {
     background: #A8C686;
+    margin-bottom: 1px;
     border: none;
     padding: 8px;
     cursor: pointer;
@@ -192,16 +193,32 @@ h3 {
 }
 
 /* Export buttons with unique styling */
-#export,
-#exportAll {
-    background-color: #6CA6CD;
+#export {
+    background-color: #6CA6CD !important;
 }
 
 /* Hover effect for export buttons */
-#export:hover,
+#export:hover {
+    background-color: #5A90B5 !important;
+}
+
+/* Export All button in sidebar */
+#exportAll {
+    margin: 8px;
+    padding: 8px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+    background-color: #6CA6CD;
+    color: #fff;
+    text-align: center;
+}
+
 #exportAll:hover {
     background-color: #5A90B5;
 }
+
 
 /* --- Dark Mode --- */
 /* Dark mode styles for the container */
@@ -270,28 +287,18 @@ body.dark #lastSaved {
     color: #BBB;
 }
 
-/* Dark mode styles for buttons */
-body.dark #buttons button {
-    background: #555;
-    color: #F5F5F5;
-}
-
-/* Hover effect for buttons in dark mode */
-body.dark #buttons button:hover {
-    background: #666;
-}
-
 /* Dark mode styles for export buttons */
 body.dark #export,
 body.dark #exportAll {
     background-color: #4682B4 !important;
+    color: #fff;
 }
 
-/* Hover effect for export buttons in dark mode */
 body.dark #export:hover,
 body.dark #exportAll:hover {
     background-color: #3A6F96 !important;
 }
+
 
 /* Dark mode styles for the theme toggle button */
 body.dark #toggleTheme {
@@ -301,4 +308,20 @@ body.dark #toggleTheme {
 /* Hover effect for the theme toggle button in dark mode */
 body.dark #toggleTheme:hover {
     background: #444444;
+}
+
+#noteList::-webkit-scrollbar,
+#note::-webkit-scrollbar {
+    width: 8px;
+}
+
+#noteList::-webkit-scrollbar-thumb,
+#note::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 4px;
+}
+
+#noteList::-webkit-scrollbar-thumb:hover,
+#note::-webkit-scrollbar-thumb:hover {
+    background: #888;
 }
