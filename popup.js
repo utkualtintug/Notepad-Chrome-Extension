@@ -157,7 +157,7 @@ syncBtn.addEventListener("click", () => {
 });
 
 // --- load from sync button ---
-loadSync.addEventListener("click", () => {
+loadBtn.addEventListener("click", () => {
   chrome.storage.sync.get("myNote", (data) => {
     if (chrome.runtime.lastError) {
       console.error("Load failed:", chrome.runtime.lastError);
