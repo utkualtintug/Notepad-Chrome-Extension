@@ -8,6 +8,8 @@ const themeIcon = document.getElementById("themeIcon");
 const exportBtn = document.getElementById("export");
 const lastSaved = document.getElementById("lastSaved");
 const wordCount = document.getElementById("wordCount");
+const syncBtn = document.getElementById("sync");
+const loadBtn = document.getElementById("load");
 
 // --- format helper for timestamp ---
 function formatTimestamp(savedTime) {
@@ -136,6 +138,48 @@ chrome.storage.local.get("theme", (data) => {
   } else {
     themeIcon.src = "assets/lightMode.svg";
   }
+});
+
+// --- sync button ---
+syncBtn.addEventListener("click", () => {
+  const note = textarea.value;
+
+  chrome.storage.sync.set({ myNote: note }, () => {
+    if (chrome.runtime.lastError) {
+      console.error("Sync failed:", chrome.runtime.lastError);
+      alert("Sync failed: " + chrome.runtime.lastError.message);
+    } else {
+      console.log("Note synced:", note);
+      updateTimestamp();
+      alert("Note synced across devices!");
+    }
+  });
+});
+
+// --- load from sync button ---
+loadSync.addEventListener("click", () => {
+  chrome.storage.sync.get("myNote", (data) => {
+    if (chrome.runtime.lastError) {
+      console.error("Load failed:", chrome.runtime.lastError);
+      alert("Load failed: " + chrome.runtime.lastError.message);
+      return;
+    }
+
+    if (data.myNote) {
+      textarea.value = data.myNote;
+
+      // save to local
+      chrome.storage.local.set({ myNote: data.myNote });
+
+      updateCounters();
+      updateTimestamp();
+
+      console.log("Note loaded from sync:", data.myNote);
+      alert("Note loaded from sync!");
+    } else {
+      alert("No note found in sync storage.");
+    }
+  });
 });
 
 // --- export button ---
