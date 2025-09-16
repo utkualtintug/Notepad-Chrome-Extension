@@ -1,15 +1,15 @@
 const textarea = document.getElementById("note");
-const clearBtn = document.getElementById("clear");
-const modal = document.getElementById("confirmModal");
-const confirmYes = document.getElementById("confirmYes");
-const confirmNo = document.getElementById("confirmNo");
 const toggleTheme = document.getElementById("toggleTheme");
 const themeIcon = document.getElementById("themeIcon");
 const exportBtn = document.getElementById("export");
+const exportAllBtn = document.getElementById("exportAll");
 const lastSaved = document.getElementById("lastSaved");
 const wordCount = document.getElementById("wordCount");
-const syncBtn = document.getElementById("sync");
-const loadBtn = document.getElementById("load");
+const noteList = document.getElementById("noteList");
+const newNoteBtn = document.getElementById("newNote");
+
+let notes = [];
+let currentNoteId = null;
 
 // --- format helper for timestamp ---
 function formatTimestamp(savedTime) {
@@ -70,55 +70,109 @@ function updateWordCount() {
   wordCount.textContent = "Words: " + words;
 }
 
-// --- input handler (save + timestamp + word count) ---
-textarea.addEventListener("input", () => {
-  const note = textarea.value;
+// --- render note list ---
+function renderNotes() {
+  noteList.innerHTML = "";
 
-  chrome.storage.local.set({ myNote: note }, () => {
-    if (chrome.runtime.lastError) {
-      console.error("Save failed:", chrome.runtime.lastError);
-      alert("Save failed: " + chrome.runtime.lastError.message);
-    } else {
-      console.log("Note saved:", note);
-      updateTimestamp();
+  notes.forEach((note, index) => {
+    const div = document.createElement("div");
+    div.className = "note-item";
+
+    const titleSpan = document.createElement("span");
+    titleSpan.textContent = note.title || `Note ${index + 1}`;
+    titleSpan.className = "note-title";
+    titleSpan.addEventListener("click", () => loadNote(index));
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "X";
+    deleteBtn.className = "delete-btn";
+    deleteBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      e;
+      notes.splice(index, 1);
+      if (currentNoteId === index) {
+        textarea.value = "";
+        currentNoteId = null;
+      }
+      saveNotes();
+      renderNotes();
+    });
+
+    div.appendChild(titleSpan);
+    div.appendChild(deleteBtn);
+
+    if (index === currentNoteId) {
+      div.classList.add("active");
     }
-  });
 
+    noteList.appendChild(div);
+  });
+}
+
+// --- load note ---
+function loadNote(index) {
+  currentNoteId = index;
+  textarea.value = notes[index].content;
   updateWordCount();
+  renderNotes();
+}
+
+// --- save notes ---
+function saveNotes() {
+  chrome.storage.local.set({ notes }, () => {
+    console.log("Notes saved:", notes);
+  });
+}
+
+// --- new note ---
+newNoteBtn.addEventListener("click", () => {
+  const newNote = { title: "Untitled", content: "" };
+  notes.unshift(newNote);
+  currentNoteId = 0;
+  textarea.value = "";
+  renderNotes();
+  saveNotes();
 });
 
-// --- load saved note + timestamp ---
-chrome.storage.local.get(["myNote", "lastSaved"], (data) => {
-  if (data.myNote) {
-    textarea.value = data.myNote;
-    updateWordCount();
+// --- input handler (save + timestamp + word count) ---
+textarea.addEventListener("input", () => {
+  if (notes.length === 0) {
+    const newNote = { title: "Untitled", content: "" };
+    notes.push(newNote);
+    currentNoteId = 0;
   }
+
+  if (currentNoteId !== null) {
+    notes[currentNoteId].content = textarea.value;
+    notes[currentNoteId].title = textarea.value.split("\n")[0].slice(0, 20);
+
+    saveNotes();
+    updateTimestamp();
+    updateWordCount();
+    renderNotes();
+  }
+});
+
+// --- load saved notes + timestamp ---
+chrome.storage.local.get(["notes", "lastSaved"], (data) => {
+  if (data.notes && data.notes.length > 0) {
+    notes = data.notes;
+    currentNoteId = 0; // ilk notu aç
+    textarea.value = notes[0].content;
+    updateWordCount();
+  } else {
+    const newNote = { title: "Untitled", content: "" };
+    notes.push(newNote);
+    currentNoteId = 0;
+    textarea.value = "";
+    saveNotes();
+  }
+
+  renderNotes();
+
   if (data.lastSaved) {
     lastSaved.textContent = "Last saved: " + formatTimestamp(data.lastSaved);
   }
-});
-
-// --- clear modal logic ---
-clearBtn.addEventListener("click", () => {
-  if (textarea.value.trim() === "") {
-    console.log("Notepad is empty");
-  } else {
-    modal.style.display = "flex";
-  }
-});
-
-confirmYes.addEventListener("click", () => {
-  chrome.storage.local.remove("myNote", () => {
-    textarea.value = "";
-    updateWordCount();
-    console.log("Note deleted");
-    modal.style.display = "none";
-  });
-});
-
-confirmNo.addEventListener("click", () => {
-  console.log("Delete canceled");
-  modal.style.display = "none";
 });
 
 // --- theme toggle ---
@@ -140,44 +194,27 @@ chrome.storage.local.get("theme", (data) => {
   }
 });
 
-// --- sync button ---
-syncBtn.addEventListener("click", () => {
-  const note = textarea.value;
+// --- export button ---
+exportAllBtn.addEventListener("click", () => {
+  if (!notes.length) {
+    alert("No notes to export");
+    return;
+  }
 
-  chrome.storage.sync.set({ myNote: note }, () => {
-    if (chrome.runtime.lastError) {
-      console.error("Sync failed:", chrome.runtime.lastError);
-      alert("Sync failed: " + chrome.runtime.lastError.message);
-    } else {
-      console.log("Note synced:", note);
-      updateTimestamp();
-      alert("Note synced across devices!");
-    }
-  });
-});
-// --- load from sync button ---
-loadBtn.addEventListener("click", () => {
-  chrome.storage.sync.get("myNote", (data) => {
-    if (chrome.runtime.lastError) {
-      console.error("Load failed:", chrome.runtime.lastError);
-      alert("Load failed: " + chrome.runtime.lastError.message);
-      return;
-    }
+  const allText = notes
+    .map((n, i) => `# Note ${i + 1}: ${n.title}\n${n.content}`)
+    .join("\n\n---\n\n");
 
-    if (data.myNote) {
-      textarea.value = data.myNote;
+  const blob = new Blob([allText], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
 
-      chrome.storage.local.set({ myNote: data.myNote });
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "notes.txt";
+  a.click();
 
-      updateWordCount();
-      updateTimestamp();
-
-      console.log("Note loaded from sync:", data.myNote);
-      alert("Note loaded from sync!");
-    } else {
-      alert("No note found in sync storage.");
-    }
-  });
+  URL.revokeObjectURL(url);
+  console.log("Notes exported as notes.txt");
 });
 
 // --- export button ---
