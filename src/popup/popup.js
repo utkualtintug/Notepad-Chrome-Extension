@@ -15,7 +15,6 @@ let currentNoteId = null;
 function formatTimestamp(savedTime) {
   const savedDate = new Date(savedTime);
   const now = new Date();
-
   const sameDay = savedDate.toDateString() === now.toDateString();
   const yesterday = new Date();
   yesterday.setDate(now.getDate() - 1);
@@ -52,16 +51,10 @@ function formatTimestamp(savedTime) {
 }
 
 // --- update timestamp ---
-function updateTimestamp() {
-  const now = Date.now();
-  lastSaved.textContent = "Last saved: " + formatTimestamp(now);
-
-  chrome.storage.local.set({ lastSaved: now }, () => {
-    if (chrome.runtime.lastError) {
-      console.error("Timestamp save failed:", chrome.runtime.lastError);
-    }
-  });
+function updateTimestamp(savedTime) {
+  lastSaved.textContent = "Last saved: " + formatTimestamp(savedTime);
 }
+
 
 // --- update word count ---
 function updateWordCount() {
@@ -88,7 +81,6 @@ function renderNotes() {
     deleteBtn.className = "delete-btn";
     deleteBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      e;
       notes.splice(index, 1);
       if (currentNoteId === index) {
         textarea.value = "";
@@ -114,6 +106,11 @@ function loadNote(index) {
   currentNoteId = index;
   textarea.value = notes[index].content;
   updateWordCount();
+  if (notes[index].lastSaved) {
+    updateTimestamp(notes[index].lastSaved);
+  } else {
+    lastSaved.textContent = "Not yet saved";
+  }
   renderNotes();
 }
 
@@ -126,7 +123,7 @@ function saveNotes() {
 
 // --- new note ---
 newNoteBtn.addEventListener("click", () => {
-  const newNote = { title: "Untitled", content: "" };
+  const newNote = { title: "Untitled", content: "", lastSaved: Date.now() };
   notes.unshift(newNote);
   currentNoteId = 0;
   textarea.value = "";
@@ -134,10 +131,11 @@ newNoteBtn.addEventListener("click", () => {
   saveNotes();
 });
 
+
 // --- input handler (save + timestamp + word count) ---
 textarea.addEventListener("input", () => {
   if (notes.length === 0) {
-    const newNote = { title: "Untitled", content: "" };
+    const newNote = { title: "Untitled", content: "", lastSaved: Date.now() };
     notes.push(newNote);
     currentNoteId = 0;
   }
@@ -145,23 +143,28 @@ textarea.addEventListener("input", () => {
   if (currentNoteId !== null) {
     notes[currentNoteId].content = textarea.value;
     notes[currentNoteId].title = textarea.value.split("\n")[0].slice(0, 20);
+    notes[currentNoteId].lastSaved = Date.now();
 
     saveNotes();
-    updateTimestamp();
+    updateTimestamp(notes[currentNoteId].lastSaved);
     updateWordCount();
     renderNotes();
   }
 });
 
+
 // --- load saved notes + timestamp ---
-chrome.storage.local.get(["notes", "lastSaved"], (data) => {
+chrome.storage.local.get("notes", (data) => {
   if (data.notes && data.notes.length > 0) {
     notes = data.notes;
     currentNoteId = 0;
     textarea.value = notes[0].content;
     updateWordCount();
+    if (notes[0].lastSaved) {
+      updateTimestamp(notes[0].lastSaved);
+    }
   } else {
-    const newNote = { title: "Untitled", content: "" };
+    const newNote = { title: "Untitled", content: "", lastSaved: Date.now() };
     notes.push(newNote);
     currentNoteId = 0;
     textarea.value = "";
@@ -169,11 +172,8 @@ chrome.storage.local.get(["notes", "lastSaved"], (data) => {
   }
 
   renderNotes();
-
-  if (data.lastSaved) {
-    lastSaved.textContent = "Last saved: " + formatTimestamp(data.lastSaved);
-  }
 });
+
 
 // --- theme toggle ---
 toggleTheme.addEventListener("click", () => {
@@ -194,7 +194,8 @@ chrome.storage.local.get("theme", (data) => {
   }
 });
 
-// --- export button ---
+
+// --- export all notes button ---
 exportAllBtn.addEventListener("click", () => {
   if (!notes.length) {
     alert("No notes to export");
@@ -202,7 +203,11 @@ exportAllBtn.addEventListener("click", () => {
   }
 
   const allText = notes
-    .map((n, i) => `# Note ${i + 1}: ${n.title}\n${n.content}`)
+    .map(
+      (n, i) =>
+        `# Note ${i + 1}: ${n.title}\n${n.content}\n(Saved: ${n.lastSaved ? formatTimestamp(n.lastSaved) : "N/A"
+        })`
+    )
     .join("\n\n---\n\n");
 
   const blob = new Blob([allText], { type: "text/plain" });
@@ -217,7 +222,7 @@ exportAllBtn.addEventListener("click", () => {
   console.log("Notes exported as notes.txt");
 });
 
-// --- export button ---
+// --- export current note button ---
 exportBtn.addEventListener("click", () => {
   const note = textarea.value;
   if (!note.trim()) {
