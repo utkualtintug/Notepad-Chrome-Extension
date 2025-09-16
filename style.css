@@ -3,213 +3,273 @@
 /* Global font */
 * {
     font-family: "Oxanium", sans-serif;
+    box-sizing: border-box;
 }
 
-/* Body layout */
+/* Remove popup white border */
+html,
 body {
-    width: 250px;
-    padding: 10px;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* Container with sidebar + main */
+#container {
+    display: flex;
+    width: 600px;
+    height: 400px;
     background-color: #FDF6EC;
+}
+
+/* Sidebar */
+#sidebar {
+    width: 180px;
+    background: #f0f0f0;
+    border-right: 1px solid #ccc;
     display: flex;
     flex-direction: column;
+}
+
+#newNote {
+    background: #A8C686;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#newNote:hover {
+    background: #8EB272;
+}
+
+#noteList {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.note-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.note-item:hover {
+    background: #ddd;
+}
+
+.note-item.active {
+    background: rgb(192, 194, 197);
+}
+
+.note-item.active:hover {
+    background: rgb(155, 157, 159);
+}
+
+.note-title {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    color: #d36b6b;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.delete-btn:hover {
+    color: red;
+}
+
+/* Main panel */
+#main {
+    flex: 1;
+    padding: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+#toggleTheme {
+    position: absolute;
+    display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-}
-
-/* Dark mode body */
-body.dark {
-    background-color: #2B2B2B;
-    color: #F5F5F5;
-}
-
-/* Dark mode text */
-body.dark h3 {
-    color: #F5F5F5;
-}
-
-body.dark p {
-    color: #DDD;
-}
-
-/* Dark mode textarea */
-body.dark textarea {
-    background-color: #3C3C3C;
-    color: #F5F5F5;
-    border: 1px solid #666;
-}
-
-/* Dark mode buttons */
-body.dark button {
-    background-color: #555;
-    color: #F5F5F5;
-}
-
-/* Dark mode modal */
-body.dark .modal-content {
-    background: #3C3C3C;
-    color: #F5F5F5;
-}
-
-/* Header */
-h3 {
-    color: #3E2F1C;
-    font-size: 20px;
-    font-weight: 800;
-    text-align: center;
-    margin-top: 15px;
-}
-
-/* Textarea */
-textarea {
-    width: 100%;
-    height: 150px;
-    max-height: 400px;
-    min-height: 150px;
-    resize: vertical;
-    background-color: #FAFAFA;
-    border: 1px solid #CFCFCF;
-    padding: 5px;
-}
-
-/* Buttons */
-button {
-    margin-top: 10px;
-    width: 100%;
-    padding: 5px;
-    background-color: #A8C686;
-    color: #FFFFFF;
-    font-size: 15px;
-    font-weight: 600;
+    top: 8px;
+    right: 8px;
     border: none;
-    border-radius: 5px;
+    border-radius: 50%;
+    background: #8EB272;
     cursor: pointer;
+    padding: 6px;
 }
 
-/* Light hover for buttons */
-button:hover {
-    background-color: #8EB272;
-}
-
-/* Dark hover for buttons */
-body.dark button:hover {
-    background-color: #6B6B6B;
-}
-
-/* Toggle theme button */
-#toggleTheme {
+#toggleTheme:hover {
     position: absolute;
     top: 8px;
     right: 8px;
-    background-color: #A8C686;
     border: none;
+    border-radius: 50%;
+    background: #A8C686;
     cursor: pointer;
     padding: 6px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 36px;
-    height: 36px;
 }
 
-/* Icon inside theme button */
 #toggleTheme img {
     width: 20px;
     height: 20px;
 }
 
-/* Light mode theme button */
-body:not(.dark) #toggleTheme {
-    background-color: #A8C686;
+h3 {
     color: #3E2F1C;
-}
-
-/* Dark mode theme button */
-body.dark #toggleTheme {
-    background-color: #444;
-    color: #FDF6EC;
-}
-
-/* Hover effect for theme button */
-body.dark #toggleTheme:hover {
-    background-color: #666;
-}
-
-/* Modal */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    justify-content: center;
-    align-items: center;
-}
-
-/* Modal content */
-.modal-content {
-    background: #FDF6EC;
-    padding: 15px;
-    border-radius: 8px;
+    font-size: 20px;
+    font-weight: 800;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin-top: 10px;
 }
 
-/* Modal text */
-.modal-content p {
-    margin-bottom: 15px;
-    font-weight: 600;
-    color: #3E2F1C;
+#note {
+    flex: 1;
+    resize: none;
+    border: 1px solid #ccc;
+    padding: 5px;
+    background: #FAFAFA;
 }
 
-/* Modal confirm buttons */
-#confirmYes {
+/* Info bar */
+#infoBar {
+    font-size: 12px;
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#wordCount,
+#lastSaved {
+    color: #777;
+}
+
+/* Buttons */
+#buttons {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+#buttons button {
+    flex: 1;
+    padding: 6px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
     background: #A8C686;
-    color: white;
+    color: #fff;
 }
 
-#confirmNo {
-    background: #D36B6B;
-    color: white;
+#buttons button:hover {
+    background: #8EB272;
 }
 
-#export {
+#export,
+#exportAll {
     background-color: #6CA6CD;
-    color: white;
 }
 
-#export:hover {
+#export:hover,
+#exportAll:hover {
     background-color: #5A90B5;
 }
 
-body.dark #export {
-    background-color: #4682B4;
+
+/* --- Dark Mode --- */
+body.dark #container {
+    background: #2B2B2B;
+    color: #F5F5F5;
 }
 
-body.dark #export:hover {
-    background-color: #3A6F96;
+body.dark #sidebar {
+    background: #3C3C3C;
+    border-right: 1px solid #555;
 }
 
-#infoBar {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    font-size: 12px;
-    margin-top: 5px;
+body.dark #newNote {
+    background: #555;
+    color: #F5F5F5;
 }
 
-#wordCount {
-    color: #777;
+body.dark #newNote:hover {
+    background: #666;
 }
 
-#lastSaved {
-    color: #777;
+body.dark .note-item {
+    border-bottom: 1px solid #555;
+}
+
+body.dark .note-item:hover {
+    background: #444;
+}
+
+body.dark .note-item.active {
+    background: #555;
+}
+
+body.dark .note-item.active:hover {
+    background: #777;
+}
+
+body.dark #main {
+    background: #2B2B2B;
+}
+
+body.dark h3 {
+    color: #F5F5F5;
+}
+
+body.dark #note {
+    background: #3C3C3C;
+    color: #F5F5F5;
+    border: 1px solid #666;
 }
 
 body.dark #wordCount,
 body.dark #lastSaved {
     color: #BBB;
+}
+
+body.dark #buttons button {
+    background: #555;
+    color: #F5F5F5;
+}
+
+body.dark #buttons button:hover {
+    background: #666;
+}
+
+body.dark #export,
+body.dark #exportAll {
+    background-color: #4682B4 !important;
+}
+
+body.dark #export:hover,
+body.dark #exportAll:hover {
+    background-color: #3A6F96 !important;
+}
+
+
+
+body.dark #toggleTheme {
+    background: #555;
+}
+
+body.dark #toggleTheme:hover {
+    background: #444444;
 }

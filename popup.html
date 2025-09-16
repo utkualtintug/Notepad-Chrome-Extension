@@ -2,35 +2,38 @@
 
 <head>
     <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
-    <button id="toggleTheme">
-        <img id="themeIcon" src="assets/lightMode.svg" alt="Theme Icon" width="20">
-    </button>
+    <div id="container">
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <button id="newNote">+ New Note</button>
+            <div id="noteList"></div>
+        </div>
 
-    <h3>Simple Notepad</h3>
-    <textarea id="note"></textarea>
-    <div id="infoBar">
-        <span id="wordCount">Words: 0</span>
-        <span id="lastSaved">Not yet saved</span>
-    </div>
-    <button id="clear">Clear</button>
-    <button id="sync">Sync now</button>
-    <button id="load">Load from sync</button>
-    <button id="export">Export</button>
+        <!-- Main Panel -->
+        <div id="main">
+            <button id="toggleTheme">
+                <img id="themeIcon" src="assets/lightMode.svg" alt="Theme Icon" width="20">
+            </button>
 
-    <div id="confirmModal" class="modal">
-        <div class="modal-content">
-            <p>Are you sure you want to delete the note?</p>
-            <button id="confirmYes">Yes</button>
-            <button id="confirmNo">No</button>
+            <h3>Simple Notepad</h3>
+            <textarea id="note" autofocus></textarea>
+
+            <div id="infoBar">
+                <span id="lastSaved">Not yet saved</span>
+                <span id="wordCount">Words: 0</span>
+            </div>
+
+            <div id="buttons">
+                <button id="export">Export Selected Note</button>
+                <button id="exportAll">Export All Notes</button>
+            </div>
         </div>
     </div>
 
     <script src="popup.js"></script>
-
 </body>
 
 </html>
