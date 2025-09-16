@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <button id="toggleTheme">
+        <img id="themeIcon" src="assets/lightMode.svg" alt="Theme Icon" width="20">
+    </button>
+
+    <h3>Simple Notepad</h3>
+    <textarea id="note"></textarea>
+    <button id="clear">Clear</button>
+    <button id="export">Export</button>
+
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <p>Are you sure you want to delete the note?</p>
+            <button id="confirmYes">Yes</button>
+            <button id="confirmNo">No</button>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+
+</body>
+
+</html>

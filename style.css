@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&display=swap');
+
+/* Global font */
+* {
+    font-family: "Oxanium", sans-serif;
+}
+
+/* Body layout */
+body {
+    width: 250px;
+    padding: 10px;
+    background-color: #FDF6EC;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Dark mode body */
+body.dark {
+    background-color: #2B2B2B;
+    color: #F5F5F5;
+}
+
+/* Dark mode text */
+body.dark h3 {
+    color: #F5F5F5;
+}
+
+body.dark p {
+    color: #DDD;
+}
+
+/* Dark mode textarea */
+body.dark textarea {
+    background-color: #3C3C3C;
+    color: #F5F5F5;
+    border: 1px solid #666;
+}
+
+/* Dark mode buttons */
+body.dark button {
+    background-color: #555;
+    color: #F5F5F5;
+}
+
+/* Dark mode modal */
+body.dark .modal-content {
+    background: #3C3C3C;
+    color: #F5F5F5;
+}
+
+/* Header */
+h3 {
+    color: #3E2F1C;
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
+    margin-top: 15px;
+}
+
+/* Textarea */
+textarea {
+    width: 100%;
+    height: 150px;
+    max-height: 400px;
+    min-height: 150px;
+    resize: vertical;
+    background-color: #FAFAFA;
+    border: 1px solid #CFCFCF;
+    padding: 5px;
+}
+
+/* Buttons */
+button {
+    margin-top: 10px;
+    width: 100%;
+    padding: 5px;
+    background-color: #A8C686;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Light hover for buttons */
+button:hover {
+    background-color: #8EB272;
+}
+
+/* Dark hover for buttons */
+body.dark button:hover {
+    background-color: #6B6B6B;
+}
+
+/* Toggle theme button */
+#toggleTheme {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #A8C686;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+}
+
+/* Icon inside theme button */
+#toggleTheme img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Light mode theme button */
+body:not(.dark) #toggleTheme {
+    background-color: #A8C686;
+    color: #3E2F1C;
+}
+
+/* Dark mode theme button */
+body.dark #toggleTheme {
+    background-color: #444;
+    color: #FDF6EC;
+}
+
+/* Hover effect for theme button */
+body.dark #toggleTheme:hover {
+    background-color: #666;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal content */
+.modal-content {
+    background: #FDF6EC;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Modal text */
+.modal-content p {
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #3E2F1C;
+}
+
+/* Modal confirm buttons */
+#confirmYes {
+    background: #A8C686;
+    color: white;
+}
+
+#confirmNo {
+    background: #D36B6B;
+    color: white;
+}
+
+#export {
+    background-color: #6CA6CD;
+    color: white;
+}
+
+#export:hover {
+    background-color: #5A90B5;
+}
+
+body.dark #export {
+    background-color: #4682B4;
+}
+
+body.dark #export:hover {
+    background-color: #3A6F96;
+}

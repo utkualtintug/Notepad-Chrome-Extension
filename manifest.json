@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "Simple Notepad",
+  "description": "Simple Notepad.",
+  "version": "1.0",
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "assets/notepad.png"
+  },
+  "permissions": ["storage"]
+}
