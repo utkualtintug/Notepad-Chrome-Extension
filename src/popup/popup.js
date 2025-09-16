@@ -180,7 +180,7 @@ toggleTheme.addEventListener("click", () => {
   document.body.classList.toggle("dark");
   const isDark = document.body.classList.contains("dark");
 
-  themeIcon.src = isDark ? "assets/darkMode.svg" : "assets/lightMode.svg";
+  themeIcon.src = isDark ? "../assets/darkMode.svg" : "../assets/lightMode.svg";
 
   chrome.storage.local.set({ theme: isDark ? "dark" : "light" });
 });
@@ -188,9 +188,9 @@ toggleTheme.addEventListener("click", () => {
 chrome.storage.local.get("theme", (data) => {
   if (data.theme === "dark") {
     document.body.classList.add("dark");
-    themeIcon.src = "assets/darkMode.svg";
+    themeIcon.src = "../assets/darkMode.svg";
   } else {
-    themeIcon.src = "assets/lightMode.svg";
+    themeIcon.src = "../assets/lightMode.svg";
   }
 });
 
