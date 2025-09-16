@@ -1,0 +1,304 @@
+/* Importing a custom font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&display=swap');
+
+/* Global font settings for all elements */
+* {
+    font-family: "Oxanium", sans-serif;
+    box-sizing: border-box;
+}
+
+/* Remove default margin and padding for the popup */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* Main container holding the sidebar and main content */
+#container {
+    display: flex;
+    width: 600px;
+    height: 400px;
+    background-color: #FDF6EC;
+}
+
+/* Sidebar for navigation and note management */
+#sidebar {
+    width: 180px;
+    background: #f0f0f0;
+    border-right: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Button to create a new note */
+#newNote {
+    background: #A8C686;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Hover effect for the new note button */
+#newNote:hover {
+    background: #8EB272;
+}
+
+/* List of notes in the sidebar */
+#noteList {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Individual note item in the list */
+.note-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Hover effect for note items */
+.note-item:hover {
+    background: #ddd;
+}
+
+/* Active note item styling */
+.note-item.active {
+    background: rgb(192, 194, 197);
+}
+
+/* Hover effect for active note items */
+.note-item.active:hover {
+    background: rgb(155, 157, 159);
+}
+
+/* Title of the note, with text overflow handling */
+.note-title {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Delete button for notes */
+.delete-btn {
+    background: none;
+    border: none;
+    color: #d36b6b;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Hover effect for the delete button */
+.delete-btn:hover {
+    color: red;
+}
+
+/* Main content area for editing notes */
+#main {
+    flex: 1;
+    padding: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Button to toggle between light and dark themes */
+#toggleTheme {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 8px;
+    right: 8px;
+    border: none;
+    border-radius: 50%;
+    background: #8EB272;
+    cursor: pointer;
+    padding: 6px;
+}
+
+/* Hover effect for the theme toggle button */
+#toggleTheme:hover {
+    background: #A8C686;
+}
+
+/* Icon inside the theme toggle button */
+#toggleTheme img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Header for the main content area */
+h3 {
+    color: #3E2F1C;
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Text area for writing notes */
+#note {
+    flex: 1;
+    resize: none;
+    border: 1px solid #ccc;
+    padding: 5px;
+    background: #FAFAFA;
+}
+
+/* Information bar below the note editor */
+#infoBar {
+    font-size: 12px;
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Word count and last saved time in the info bar */
+#wordCount,
+#lastSaved {
+    color: #777;
+}
+
+/* Container for action buttons */
+#buttons {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+/* General styling for buttons */
+#buttons button {
+    flex: 1;
+    padding: 6px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+    background: #A8C686;
+    color: #fff;
+}
+
+/* Hover effect for buttons */
+#buttons button:hover {
+    background: #8EB272;
+}
+
+/* Export buttons with unique styling */
+#export,
+#exportAll {
+    background-color: #6CA6CD;
+}
+
+/* Hover effect for export buttons */
+#export:hover,
+#exportAll:hover {
+    background-color: #5A90B5;
+}
+
+/* --- Dark Mode --- */
+/* Dark mode styles for the container */
+body.dark #container {
+    background: #2B2B2B;
+    color: #F5F5F5;
+}
+
+/* Dark mode styles for the sidebar */
+body.dark #sidebar {
+    background: #3C3C3C;
+    border-right: 1px solid #555;
+}
+
+/* Dark mode styles for the new note button */
+body.dark #newNote {
+    background: #555;
+    color: #F5F5F5;
+}
+
+/* Hover effect for the new note button in dark mode */
+body.dark #newNote:hover {
+    background: #666;
+}
+
+/* Dark mode styles for note items */
+body.dark .note-item {
+    border-bottom: 1px solid #555;
+}
+
+/* Hover effect for note items in dark mode */
+body.dark .note-item:hover {
+    background: #444;
+}
+
+/* Active note item styling in dark mode */
+body.dark .note-item.active {
+    background: #555;
+}
+
+/* Hover effect for active note items in dark mode */
+body.dark .note-item.active:hover {
+    background: #777;
+}
+
+/* Dark mode styles for the main content area */
+body.dark #main {
+    background: #2B2B2B;
+}
+
+/* Dark mode styles for the header */
+body.dark h3 {
+    color: #F5F5F5;
+}
+
+/* Dark mode styles for the text area */
+body.dark #note {
+    background: #3C3C3C;
+    color: #F5F5F5;
+    border: 1px solid #666;
+}
+
+/* Dark mode styles for the info bar */
+body.dark #wordCount,
+body.dark #lastSaved {
+    color: #BBB;
+}
+
+/* Dark mode styles for buttons */
+body.dark #buttons button {
+    background: #555;
+    color: #F5F5F5;
+}
+
+/* Hover effect for buttons in dark mode */
+body.dark #buttons button:hover {
+    background: #666;
+}
+
+/* Dark mode styles for export buttons */
+body.dark #export,
+body.dark #exportAll {
+    background-color: #4682B4 !important;
+}
+
+/* Hover effect for export buttons in dark mode */
+body.dark #export:hover,
+body.dark #exportAll:hover {
+    background-color: #3A6F96 !important;
+}
+
+/* Dark mode styles for the theme toggle button */
+body.dark #toggleTheme {
+    background: #555;
+}
+
+/* Hover effect for the theme toggle button in dark mode */
+body.dark #toggleTheme:hover {
+    background: #444444;
+}
