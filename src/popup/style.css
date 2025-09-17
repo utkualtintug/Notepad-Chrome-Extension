@@ -65,7 +65,7 @@ body {
 
 /* Hover effect for note items */
 .note-item:hover {
-    background: #ddd;
+    background: #ccc;
 }
 
 /* Active note item styling */
@@ -263,7 +263,7 @@ body.dark .note-item {
 
 /* Hover effect for note items in dark mode */
 body.dark .note-item:hover {
-    background: #444;
+    background: #666;
 }
 
 /* Active note item styling in dark mode */
