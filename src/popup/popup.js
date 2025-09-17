@@ -121,6 +121,8 @@ function saveNotes() {
   });
 }
 
+const debouncedSaveNotes = debounce(saveNotes, 400);
+
 // --- new note ---
 newNoteBtn.addEventListener("click", () => {
   const newNote = { title: "Untitled", content: "", lastSaved: Date.now() };
@@ -138,6 +140,7 @@ textarea.addEventListener("input", () => {
     const newNote = { title: "Untitled", content: "", lastSaved: Date.now() };
     notes.push(newNote);
     currentNoteId = 0;
+    saveNotes();
   }
 
   if (currentNoteId !== null) {
@@ -145,13 +148,21 @@ textarea.addEventListener("input", () => {
     notes[currentNoteId].title = textarea.value.split("\n")[0].slice(0, 20);
     notes[currentNoteId].lastSaved = Date.now();
 
-    saveNotes();
+    debouncedSaveNotes();
     updateTimestamp(notes[currentNoteId].lastSaved);
     updateWordCount();
     renderNotes();
   }
 });
 
+// --- debounce function ---
+function debounce(func, delay) {
+  let timer;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => func.apply(this, args), delay);
+  };
+}
 
 // --- load saved notes + timestamp ---
 chrome.storage.local.get("notes", (data) => {
