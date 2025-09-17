@@ -162,6 +162,8 @@ chrome.storage.local.get("notes", (data) => {
     updateWordCount();
     if (notes[0].lastSaved) {
       updateTimestamp(notes[0].lastSaved);
+    } else {
+      lastSaved.textContent = "Not yet saved";
     }
   } else {
     const newNote = { title: "Untitled", content: "", lastSaved: Date.now() };
@@ -244,6 +246,13 @@ exportBtn.addEventListener("click", () => {
 
 chrome.runtime.onMessage.addListener((message) => {
   if (message.type === "NOTE_SAVED") {
+    if (currentNoteId !== null) {
+      notes[currentNoteId].lastSaved = Date.now();
+      saveNotes();
+      updateTimestamp(notes[currentNoteId].lastSaved);
+      renderNotes();
+    }
+
     const saveStatus = document.getElementById("saveStatus");
     saveStatus.style.display = "inline";
     setTimeout(() => {
