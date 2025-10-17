@@ -1,11 +1,11 @@
-# 📝 Simple Notepad Chrome Extension
+# Simple Notepad Chrome Extension
 
 A minimal Chrome extension to quickly write, save, and manage notes directly in your browser.  
 Now includes **context menu note saving**, **silent auto-dismiss notifications**, **auto-save**, **light/dark mode toggle**, and **export notes as .txt**.
 
 ---
 
-## 🚀 Features
+## Features
 
 - Save selected text via **right-click context menu**
 - Silent notifications with auto-dismiss after 3.5 seconds
@@ -15,7 +15,7 @@ Now includes **context menu note saving**, **silent auto-dismiss notifications**
 
 ---
 
-## 📂 Installation
+## Installation
 
 1. Clone or download this repository.
 2. Open **Chrome** → go to `chrome://extensions/`.
@@ -25,7 +25,7 @@ Now includes **context menu note saving**, **silent auto-dismiss notifications**
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
 ### Light Mode
 
